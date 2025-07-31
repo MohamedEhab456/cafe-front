@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Coffee Design</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/Normalize.css">
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+</head>
+
+<body>
+    <!-- Header Section -->
+    <header>
+        <div class="cart-icon">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count">0</span>
+        </div>
+        <img src="" alt="Coffee Design Logo" class="logo" id="cafe-logo">
+        <h1 class="coffee-title" id="cafe-title"></h1>
+        <!--<p class="coffee-description">Your one-stop shop for the best coffee in town.</p>-->
+    </header>
+    <!-- Section Tabs -->
+    <div class="catgory">
+        <h2>Catgory</h2>
+        <button class="toggle-categories-c" aria-label="إظهار أو إخفاء الأقسام">
+            <span class="toggle-arrow-c"><i class="fas fa-caret-down"></i></span>
+        </button>
+
+        <div class="menu-wrapper">
+            <nav class="menu-tabs"></nav>
+            <button class="toggle-categories" aria-label="إظهار أو إخفاء الأقسام">
+                <span class="toggle-arrow"><i class="fas fa-caret-down"></i></span>
+            </button>
+        </div>
+    </div>
+    <div class="search-bar">
+        <input type="text" id="product-search" placeholder="Search" autocomplete="off">
+        <span class="search-icon"><i class="fas fa-search"></i></span>
+    </div>
+
+    <!-- Section Content -->
+
+    <div class="container">
+        <div class="name" id="pro-name">
+
+        </div>
+        <div class="boxes" id="products-container">
+
+        </div>
+        <div class="navigation-buttons">
+            <button class="nav-btn prev-btn" id="prev-btn" style="display: none;">
+                السابق
+                <i class="fas fa-chevron-right"></i>
+            </button>
+            <button class="nav-btn next-btn" id="next-btn">
+                <i class="fas fa-chevron-left"></i>
+                التالي
+            </button>
+        </div>
+    </div>
+
+    <!-- نافذة السلة المنبثقة -->
+    <div class="cart-modal" style="display:none;">
+        <div class="cart-modal-content">
+            <button class="close-cart-modal menu-close" aria-label="إغلاق السلة">&times;</button>
+            <h2>سلة التسوق</h2>
+            <div class="cart-items"></div>
+            <!-- زر إغلاق في الأسفل فقط -->
+            <button class="close-cart-modal btn-close">إغلاق</button>
+        </div>
+    </div>
+
+    <!-- أيقونة السلة الطائرة -->
+    <div class="flying-cart-icon">
+        <i class="fas fa-shopping-cart"></i>
+    </div>
+    <!--Contact us-->
+<div class="container">
+            <div class="section-header">
+                <h2>Contact Us</h2>
+            </div>
+            
+            <div class="contact-content">
+
+                    <div class="contact-item loading loaded">
+                        <div>
+                            <h3>الهاتف</h3>
+                            <p>+966 50 123 4567</p>
+                        </div>
+                        <i class="fas fa-phone"></i>                        
+                    </div>
+                    <div class="contact-item loading loaded">
+                        <div>
+                            <h3>العنوان</h3>
+                            <p>شارع الملك فهد، الرياض</p>
+                        </div>
+                        <i class="fas fa-map-marker-alt"></i>                        
+                    </div>
+
+            </div>
+        </div>
+
+    <!--Footer-->
+<footer class="footer">
+  <div class="footer-content">
+    <h3 class="footer-logo"> Coffee Name</h3>
+    
+    <div class="social-links">
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+    </div>
+    
+    <div class="footer-credits">
+      <p>&copy; 2025 <a href="#" class="dev-name">Mohamed</a>. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+    <!-- ...existing code... -->
+<button id="scroll-to-top" class="scroll-to-top-btn" aria-label="العودة للأعلى">
+    <i class="fas fa-arrow-up"></i>
+</button>
+<!-- ...existing code... -->
+    <script src="js/script.js"></script>
+</body>
+
+</html>
