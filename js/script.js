@@ -89,6 +89,14 @@ function loadData() {
           btn.textContent = section.label;
           btn.setAttribute("aria-label", `عرض ${section.label}`);
 
+          // إذا كان القسم هو العروض أضف علامة SALE
+          if (section.key === "sale" || section.label === "عروض") {
+            const saleTag = document.createElement("span");
+            saleTag.className = "sale-tag";
+            saleTag.textContent = "SALE";
+            btn.appendChild(saleTag);
+          }
+
           menuTabs.appendChild(btn);
 
           // When Click On btn
@@ -373,6 +381,13 @@ function title(data) {
 function renderProducts(products) {
   productsContainer.innerHTML = "";
 
+  // تحقق أن المنتجات مصفوفة
+  if (!Array.isArray(products)) {
+    productsContainer.innerHTML =
+      '<p style="text-align:center;color:#b9af9f">لا توجد منتجات في هذا القسم</p>';
+    return;
+  }
+
   products.forEach((product, idx) => {
     productsContainer.innerHTML += `
           <div class="box" >
@@ -514,8 +529,8 @@ updateCartCount();
 
 // عرض نافذة السلة
 const cartIcon = document.querySelector(".cart-icon");
-const cartModal = document.querySelector(".cart-modal");
-const cartItemsDiv = document.querySelector(".cart-items");
+const cartModal = document.querySelector(".cart-modal-n");
+const cartItemsDiv = document.getElementById("cartItems");
 const closeCartBtns = document.querySelectorAll(".close-cart-modal");
 
 cartIcon.addEventListener("click", showCartModal);
@@ -529,63 +544,93 @@ function hideCartModal() {
   cartModal.style.display = "none";
 }
 function renderCartItems() {
+  const cartItemsDiv = document.getElementById("cartItems");
+  const cartTotalSpan = document.getElementById("cartTotal");
   const cart = getCart();
+
   if (cart.length === 0) {
     cartItemsDiv.innerHTML =
       '<p style="text-align:center;color:#b9af9f">السلة فارغة</p>';
-    return;
+    if (cartTotalSpan) cartTotalSpan.textContent = "0 EG";
+  } else {
+    let totalPrice = 0;
+    cartItemsDiv.innerHTML = "";
+
+    cart.forEach((item, idx) => {
+      const priceMatch = item.price.match(/(\d+)/);
+      const itemPrice = priceMatch ? parseInt(priceMatch[1]) : 0;
+      const itemQty = item.qty || 1;
+      const itemTotal = itemPrice * itemQty;
+      totalPrice += itemTotal;
+
+      cartItemsDiv.innerHTML += `
+      <div class="cart-item-new" data-id="${idx}">
+        <div class="cart-item-box">
+          <div class="cart-item-actions">
+            <span class="cart-item-price">${itemTotal} EG</span>
+            <button class="quantity-btn" data-idx="${idx}" data-action="decrease">-</button>
+            <span class="number">${itemQty}</span>
+            <button class="quantity-btn" data-idx="${idx}" data-action="increase">+</button>
+          </div>
+          <div class="cart-item-info-new">
+            <h4>${item.name}</h4>
+            <p>${item.desc}</p>
+          </div>
+        </div>
+        <span class="close remove-item" data-idx="${idx}" title="حذف المنتج">&times;</span>
+      </div>
+      `;
+    });
+
+    if (cartTotalSpan) cartTotalSpan.textContent = `${totalPrice} EG`;
   }
 
-  // حساب إجمالي السعر
-  let totalPrice = 0;
-
-  cartItemsDiv.innerHTML =
-    cart
-      .map((item, idx) => {
-        // استخراج السعر من النص (مثل "25 EG" -> 25)
-        const priceMatch = item.price.match(/(\d+)/);
-        const itemPrice = priceMatch ? parseInt(priceMatch[1]) : 0;
-        const itemQty = item.qty || 1;
-        const itemTotal = itemPrice * itemQty;
-        totalPrice += itemTotal;
-
-        return `
-<div class="cart-item">
-    <div class="cart-item-info">
-        <div class="cart-item-qty">
-            <button class="cart-item-qty-btn" data-idx="${idx}" data-action="decrease">-</button>
-            <span>${itemQty}</span>
-            <button class="cart-item-qty-btn" data-idx="${idx}" data-action="increase">+</button>
-        </div>
-        <div class="cart-item-total">${itemTotal} EG</div>
-        <div class="cart-item-name">${item.name}</div>
-    </div>
-    <button class="cart-item-remove" data-idx="${idx}" title="حذف المنتج">&times;</button>
-</div>
-    `;
-      })
-      .join("") +
-    `
-<div class="cart-total">
-    <span class="total-price">${totalPrice} EG</span>
-    <span class="total-label">:الاجمالي</span>
-</div>
-  `;
-
-  // إضافة الأحداث للأزرار
-  cartItemsDiv.querySelectorAll(".cart-item-qty-btn").forEach((btn) => {
+  // أحداث الكمية
+  cartItemsDiv.querySelectorAll(".quantity-btn").forEach((btn) => {
     btn.addEventListener("click", function () {
       const idx = +this.getAttribute("data-idx");
       const action = this.getAttribute("data-action");
       updateCartItemQty(idx, action);
     });
   });
-  cartItemsDiv.querySelectorAll(".cart-item-remove").forEach((btn) => {
+
+  // حذف منتج
+  cartItemsDiv.querySelectorAll(".remove-item").forEach((btn) => {
     btn.addEventListener("click", function () {
       const idx = +this.getAttribute("data-idx");
       removeCartItem(idx);
     });
   });
+
+  // أزرار الفوتر
+  const clearCartBtn = document.getElementById("clearCart");
+  const checkoutBtn = document.getElementById("checkout");
+
+  if (clearCartBtn) {
+    clearCartBtn.onclick = function () {
+      setCart([]);
+      renderCartItems();
+      updateCartCount();
+    };
+  }
+  if (checkoutBtn) {
+    checkoutBtn.onclick = hideCartModal;
+  }
+
+  // زر الإغلاق في الهيدر
+  const closeHeaderBtn = document.querySelector(".modal-header .close");
+  if (closeHeaderBtn) {
+    closeHeaderBtn.onclick = hideCartModal;
+  }
+
+  // إظهار/إخفاء الأزرار حسب حالة السلة
+  if (cart.length === 0) {
+    if (clearCartBtn) clearCartBtn.style.display = "none";
+    if (checkoutBtn) checkoutBtn.style.display = "block";
+  } else {
+    if (clearCartBtn) clearCartBtn.style.display = "block";
+    if (checkoutBtn) checkoutBtn.style.display = "block";
+  }
 }
 function updateCartItemQty(idx, action) {
   const cart = getCart();
@@ -648,16 +693,124 @@ searchInput.addEventListener(
   }, 200)
 );
 
-let scrollBtn = document.getElementById("scroll-to-top");
+const scrollBtn = document.getElementById("scrollToTopBtn");
+const progressCircle = document.querySelector(".progress-ring__circle");
+const radius = 22;
+const circumference = 2 * Math.PI * radius;
 
-window.addEventListener("scroll", function () {
-  if (window.pageYOffset > 250) {
+progressCircle.style.strokeDasharray = `${circumference}`;
+progressCircle.style.strokeDashoffset = `${circumference}`;
+
+function setProgress(percent) {
+  const offset = circumference - percent * circumference;
+  progressCircle.style.strokeDashoffset = offset;
+}
+
+window.addEventListener("scroll", () => {
+  const scrollTop = window.scrollY || document.documentElement.scrollTop;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const percent = docHeight ? scrollTop / docHeight : 0;
+  setProgress(percent);
+
+  if (scrollTop > 200) {
     scrollBtn.classList.add("show");
   } else {
     scrollBtn.classList.remove("show");
   }
 });
 
-scrollBtn.addEventListener("click", function () {
+scrollBtn.addEventListener("click", () => {
   window.scrollTo({ top: 0, behavior: "smooth" });
 });
+
+// تحسين تحميل روابط التواصل الاجتماعي
+function loadSocialLinks() {
+  fetch("data.json")
+    .then((res) => res.json())
+    .then((data) => {
+      const social = data.social || {};
+      // لاحظ هنا: نبحث عن العنصر بواسطة الكلاس وليس id
+      const socialLinksDiv = document.querySelector(".social-links");
+      if (!socialLinksDiv) return;
+
+      const icons = {
+        facebook: "fab fa-facebook-f",
+        instagram: "fab fa-instagram",
+        twitter: "fab fa-twitter",
+        whatsapp: "fab fa-whatsapp",
+        tiktok: "fab fa-tiktok",
+        youtube: "fab fa-youtube",
+        telegram: "fab fa-telegram-plane",
+        snapchat: "fab fa-snapchat-ghost",
+        linkedin: "fab fa-linkedin-in",
+      };
+
+      let html = "";
+      Object.keys(social).forEach((key) => {
+        if (social[key] && icons[key]) {
+          html += `<a href="${social[key]}" target="_blank"><i class="${icons[key]}"></i></a>`;
+        }
+      });
+
+      socialLinksDiv.innerHTML = html;
+    });
+}
+
+document.addEventListener("DOMContentLoaded", loadSocialLinks);
+
+// دالة تحميل بيانات الاتصال (العنوان والرقم) في قسم Contact Us فقط
+function loadContactInfo() {
+  fetch("data.json")
+    .then((res) => res.json())
+    .then((data) => {
+      const contactDiv = document.getElementById("contact-content");
+      if (!contactDiv) return;
+
+      let html = "";
+
+      // الهاتف
+      if (data["contact-us"] && data["contact-us"].phone) {
+        html += `
+          <div class="contact-item">
+            <div>
+              <h3>الهاتف</h3>
+              <p>${data["contact-us"].phone}</p>
+            </div>
+            <a href="tel:${data["contact-us"].phone}" target="_blank">
+              <i class="fas fa-phone"></i>
+            </a>
+          </div>
+        `;
+      }
+
+      // العنوان
+      if (data["contact-us"] && data["contact-us"].address) {
+        html += `
+          <div class="contact-item">
+            <div>
+              <h3>العنوان</h3>
+              <p>${data["contact-us"].address}</p>
+            </div>
+            <i class="fas fa-map-marker-alt"></i>
+          </div>
+        `;
+      }
+
+      contactDiv.innerHTML = html;
+    });
+}
+
+document.addEventListener("DOMContentLoaded", loadContactInfo);
+
+fetch("data.json")
+  .then((res) => res.json())
+  .then((data) => {
+    if (!data.sections || !Array.isArray(data.sections)) {
+      handleError("sections غير موجودة أو ليست مصفوفة", "loadData");
+      return;
+    }
+    data.sections.forEach((section) => {
+      // ... باقي الكود ...
+    });
+  })
+  .catch((error) => handleError(error, "loadData"));

@@ -1,5 +1,10 @@
 {
-    "footer": {
+      "social": {
+    "facebook": "https://facebook.com/yourpage",
+    "whatsapp": "https://wa.me/123456789",
+    "instagram": "https://instagram.com/yourpage"
+  },
+    "contact-us": {
         "address": "المنصورة",
         "phone": "01000000000"
     },
@@ -8,12 +13,13 @@
         "logo": "images/logo.png"
     },
     "sections": [
+          { "key": "sale", "label": "عروض" },
         {
             "key": "drinks",
             "label": "المشروبات"
         },
         {
-            "key": "foods",
+            "key": "sale",
             "label": "ماكولات"
         },
         {
@@ -21,49 +27,31 @@
             "label": "حلويات"
         },
         {
-            "key": "deserts",
+            "key": "desserts",
+            "label": "حلويات"
+        },
+        {
+            "key": "desserts",
+            "label": "حلويات"
+        },
+        {
+            "key": "desserts",
+            "label": "حلويات"
+        },
+        {
+            "key": "desserts",
             "label": "حلويات"
         }
     ],
     "products": {
+        "sale": [],
         "drinks": [
             {
                 "name": "لاتيه",
                 "desc": "قهوة بالحليب",
                 "img": "images/aHR0cHM6Ly9iLnN0YWJsZWNvZy5jb20vMzY1MWY5ZjAtMjAzYS00NWFiLThlZTEtMDkwY2IyYzRlMDM3LmpwZWc.webp",
-                "price": "30 جـ",
-                "oldPrice": "40 جـ"
-            },
-            {
-                "name": "إسبريسو",
-                "desc": "قهوة مركزة",
-                "img": "images/French-Coffee.jpg",
-                "price": "20 جـ"
-            },
-            {
-                "name": "إسبريسو",
-                "desc": "قهوة مركزة",
-                "img": "images/French-Coffee.jpg",
-                "price": "20 جـ"
-            },
-            {
-                "name": "إسبريسو",
-                "desc": "قهوة مركزة",
-                "img": "images/French-Coffee.jpg",
-                "price": "20 جـ"
-            },
-            {
-                "name": "قهوه فرنساوي",
-                "desc": "قهوة مركزة",
-                "img": "images/French-Coffee.jpg",
-                "price": "20 جـ"
-            },
-            {
-                "name": "قهوه ساده",
-                "desc": "قهوة مركزة",
-                "img": "images/French-Coffee.jpg",
-                "price": "20 جـ",
-                "oldPrice": "40 جـ"
+                "price": "30 ",
+                "oldPrice": "40 "
             }
         ],
         "foods": [
@@ -71,45 +59,8 @@
                 "name": "ساندوتش جبنة",
                 "desc": "خبز طازج مع جبنة",
                 "img": "images/French-Coffee.jpg",
-                "price": "25 جـ",
-                "oldPrice": "30 جـ"
-            },
-            {
-                "name": "كرواسون",
-                "desc": "كرواسون طازج",
-                "img": "images/French-Coffee.jpg",
-                "price": "18 جـ"
-            },
-            {
-                "name": "إسبريسو",
-                "desc": "قهوة مركزة",
-                "img": "images/French-Coffee.jpg",
-                "price": "20 جـ"
-            },
-            {
-                "name": ",,,,,,,إسبريسو",
-                "desc": "قهوة مركزة",
-                "img": "images/French-Coffee.jpg",
-                "price": "20 ",
-                "oldPrice": "50"
-            },
-            {
-                "name": "إسبريسو",
-                "desc": "قهوة مركزة",
-                "img": "images/French-Coffee.jpg",
-                "price": "20 "
-            },
-            {
-                "name": "إسبريسو",
-                "desc": "قهوة مركزة",
-                "img": "images/French-Coffee.jpg",
-                "price": "20 "
-            },
-            {
-                "name": "إسبريسو",
-                "desc": "قهوة مركزة",
-                "img": "images/French-Coffee.jpg",
-                "price": "20 "
+                "price": "25 ",
+                "oldPrice": "30 "
             }
         ],
         "desserts": [
@@ -117,53 +68,8 @@
                 "name": "تشيز كيك",
                 "desc": "تشيز كيك بالفراولة",
                 "img": "images/French-Coffee.jpg",
-                "price": "35 جـ",
-                "oldPrice": "45 جـ"
-            },
-            {
-                "name": "براوني",
-                "desc": "براوني شوكولاتة",
-                "img": "images/French-Coffee.jpg",
-                "price": "22 جـ"
-            },
-            {
-                "name": "إسبريسو",
-                "desc": "قهوة مركزة",
-                "img": "images/French-Coffee.jpg",
-                "price": "20 جـ"
-            },
-            {
-                "name": "إسبريسو",
-                "desc": "قهوة مركزة",
-                "img": "images/French-Coffee.jpg",
-                "price": "20 جـ"
-            }
-        ],
-        "deserts": [
-            {
-                "name": "تشيز كيك",
-                "desc": "تشيز كيك بالفراولة",
-                "img": "images/French-Coffee.jpg",
-                "price": "35 جـ",
-                "oldPrice": "45 جـ"
-            },
-            {
-                "name": "براوني",
-                "desc": "براوني شوكولاتة",
-                "img": "images/French-Coffee.jpg",
-                "price": "22 جـ"
-            },
-            {
-                "name": "إسبريسو",
-                "desc": "قهوة مركزة",
-                "img": "images/French-Coffee.jpg",
-                "price": "20 جـ"
-            },
-            {
-                "name": "إسبريسو",
-                "desc": "قهوة مركزة",
-                "img": "images/French-Coffee.jpg",
-                "price": "20 جـ"
+                "price": "35 ",
+                "oldPrice": "45 "
             }
         ]
     }
