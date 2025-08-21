@@ -527,6 +527,47 @@ function animateFlyingCart(event) {
 // عند تحميل الصفحة، حدث رقم السلة
 updateCartCount();
 
+/*=============== NEW ============= */
+
+// Make the entire description area clickable
+function setupReadMoreListeners() {
+  document.querySelectorAll(".cart-item-info-new").forEach((infoBox) => {
+    // Remove any existing event listeners to prevent duplicates
+    infoBox.removeEventListener("click", handleDescriptionClick);
+    // Add the new event listener
+    infoBox.addEventListener("click", handleDescriptionClick);
+  });
+}
+
+function handleDescriptionClick(e) {
+  // Find the read-more button or the description text that was clicked
+  const readMoreBtn =
+    e.target.closest(".read-more") ||
+    (e.target.closest("p.desc") && e.currentTarget.querySelector(".read-more"));
+
+  if (readMoreBtn || e.target.classList.contains("desc")) {
+    e.preventDefault();
+    e.stopPropagation();
+
+    const infoBox = e.currentTarget;
+    const descElement = infoBox.querySelector("p.desc");
+    if (!descElement) return;
+
+    // Toggle the expanded class
+    const isExpanded = descElement.classList.toggle("expanded");
+
+    // Update the button text if it exists
+    const readMoreBtn = infoBox.querySelector(".read-more");
+    if (readMoreBtn) {
+      readMoreBtn.textContent = isExpanded ? "اقرأ أقل" : "... اقرأ المزيد";
+    }
+
+    // Force a reflow to ensure the transition works
+    void descElement.offsetWidth;
+  }
+}
+/*=============== E NEW ============= */
+
 // عرض نافذة السلة
 const cartIcon = document.querySelector(".cart-icon");
 const cartModal = document.querySelector(".cart-modal-n");
@@ -562,20 +603,40 @@ function renderCartItems() {
       const itemQty = item.qty || 1;
       const itemTotal = itemPrice * itemQty;
       totalPrice += itemTotal;
+      /*=============== NEW ============= */
+
+      let desc = item.desc || "";
+      let showReadMore = desc.length > 50; // Adjust this number as needed
+      /*=============== E NEW ============= */
 
       cartItemsDiv.innerHTML += `
       <div class="cart-item-new" data-id="${idx}">
         <div class="cart-item-box">
           <div class="cart-item-actions">
+
             <span class="cart-item-price">${itemTotal} EG</span>
+
+<!--=========== NEW =========-->
+                          <div class="casher">  
+<!--=========== E NEW =========-->
             <button class="quantity-btn" data-idx="${idx}" data-action="decrease">-</button>
             <span class="number">${itemQty}</span>
             <button class="quantity-btn" data-idx="${idx}" data-action="increase">+</button>
           </div>
+            </div>
           <div class="cart-item-info-new">
             <h4>${item.name}</h4>
-            <p>${item.desc}</p>
+<!--=========== NEW =========-->
+            
+              <p class="desc">${desc}</p>
+              ${
+                showReadMore
+                  ? '<span class="read-more">... اقرأ المزيد</span>'
+                  : ""
+              }
           </div>
+<!--=========== E NEW =========-->
+
         </div>
         <span class="close remove-item" data-idx="${idx}" title="حذف المنتج">&times;</span>
       </div>
@@ -584,6 +645,10 @@ function renderCartItems() {
 
     if (cartTotalSpan) cartTotalSpan.textContent = `${totalPrice} EG`;
   }
+  // Set up the read more listeners after rendering the cart
+  /*=============== NEW ============= */
+  setupReadMoreListeners();
+  /*=============== E NEW ============= */
 
   // أحداث الكمية
   cartItemsDiv.querySelectorAll(".quantity-btn").forEach((btn) => {
